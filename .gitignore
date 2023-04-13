@@ -1,3 +1,9 @@
+#particular to NCO/EMC
+exec
+fix
+
+
+# ---- Below is github standard for fortran 
 # Prerequisites
 *.d
 
