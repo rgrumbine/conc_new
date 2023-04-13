@@ -25,6 +25,7 @@ else
 #on a system with module software, such as wcoss
 #  set +x
   module reset
+  echo zzz `pwd` before trying to load seaice module
   module use `pwd`/modulefiles
   module load seaice_analysis/$seaice_analysis_ver
   if [ $? -ne 0 ] ; then
@@ -67,6 +68,7 @@ do
   make
 done
 
+cd $base
 if [ ! -d ../exec ] ; then
   mkdir ../exec
 fi

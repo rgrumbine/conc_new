@@ -25,5 +25,5 @@ mkllglob.o : mkllglob.f
 	ln -sf $(MMAB_INC)/icegrid.global icegrid.inc
 	$(FC) $(FOPTS) mkllglob.f 
 
-GRIBIT.o : $(MMAB_SRC)/GRIBIT.f
-	$(FC) $(FOPTS) $(MMAB_SRC)/GRIBIT.f 
+GRIBIT.o : $(MMAB_SRC)/GRIBIT.f90
+	$(FC) $(FOPTS) $(MMAB_SRC)/GRIBIT.f90
