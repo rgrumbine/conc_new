@@ -54,6 +54,7 @@ env
 
 #####################################
 # Execute the script
+echo zzz starting amsr2 script
 $HOMEseaice_amsr2/scripts/exseaice_amsr2.sh >> $pgmout
 export err=$?
 err_chk
