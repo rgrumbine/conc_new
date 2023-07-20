@@ -1,0 +1,15 @@
+[submodule "l4/sorc/mmablib"]
+	path = l4/sorc/mmablib
+	url = https://github.com/rgrumbine/mmablib
+[submodule "amsr2/sorc/mmablib"]
+	path = amsr2/sorc/mmablib
+	url = https://github.com/rgrumbine/mmablib
+[submodule "avhrr/sorc/mmablib"]
+	path = avhrr/sorc/mmablib
+	url = https://github.com/rgrumbine/mmablib
+[submodule "viirs/sorc/mmablib"]
+	path = viirs/sorc/mmablib
+	url = https://github.com/rgrumbine/mmablib
+[submodule "ssmis/sorc/mmablib"]
+	path = ssmis/sorc/mmablib
+	url = https://github.com/rgrumbine/mmablib
