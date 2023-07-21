@@ -5,8 +5,6 @@
 set -x
 
 source ../versions/build.ver
-echo zzz seaice_analysis_ver = $seaice_analysis_ver
-
 module list > /dev/null 2> /dev/null
 
 if [ $? -ne 0 ] ; then
@@ -29,7 +27,6 @@ else
   #module reset
   echo zzz pwd = `pwd`
   echo zzz seaice_analysis_ver = $seaice_analysis_ver
-
   module use `pwd`/modulefiles
   module load seaice_analysis/$seaice_analysis_ver
   if [ $? -ne 0 ] ; then
@@ -37,11 +34,13 @@ else
     exit 1
   fi
   set -x
-  module list
-  env
+  module list > modules.running 2> modules.running2
+  env > env.running
 
-  export MMAB_BASE=~/rgdev/mmablib/${MMAB_VER}
-  #export MMAB_BASE=`pwd`/mmablib/${MMAB_VER}
+  # fix MMAB?
+  # module load mmab/$MMAB_VER
+
+  export MMAB_BASE=`pwd`/mmablib/${MMAB_VER}
   export MMAB_INC=$MMAB_BASE/include
   export MMAB_SRC=$MMAB_BASE/sorc
   export MMAB_LIBF4=$MMAB_BASE/libombf_4.a
@@ -49,31 +48,22 @@ else
 fi
 export mmablib_ver=${MMAB_VER}
 
-#------------------------------------------------------------
-if [ -z $MMAB_BASE ] ; then
-  echo MMAB_BASE for mmablib has not been defined
-  exit
-fi
+#set -xe
+set -x
+set -e
 
-if [ ! -f makeall.mk ] ; then
-  cp ../makeall.mk .
-  if [ $? -ne 0 ] ; then
-    echo could not find makeall.mk, aborting
-    exit 1
-  fi
-fi
-
-if [ -z $MMAB_LIBF4 ] ; then
-  export MMAB_LIBF4=$MMAB_BASE/libombf_4.a
-fi
-
-
-for d in seaice_avhrrfilter.Cd seaice_avhrrbufr.fd
+for d in l1b_to_l2 l2_to_l3 seaice_ssmisubufr.fd
 do
+  cp makeall.mk $d
   cd $d
-  make
+  ./makeall.sh
   cd ..
 done
 
-rm */*.o
-mv seaice_avhrrfilter.Cd/seaice_avhrrfilter seaice_avhrrbufr.fd/seaice_avhrrbufr ../exec/
+if [ ! -d ../exec ] ; then
+  mkdir ../exec
+fi
+./toexec cp
+
+#clean up
+rm */makeall.mk
