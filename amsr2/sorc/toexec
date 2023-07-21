@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ ! -d ../exec ] ; then
+  mkdir ../exec
+fi
+
+mv seaice_iceamsr2.Cd/amsr2_l1b_scan seaice_iceamsr2.Cd/seaice_iceamsr2 seaice_amsrbufr.fd/seaice_amsrbufr ../exec
