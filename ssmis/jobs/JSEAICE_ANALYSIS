@@ -15,13 +15,16 @@ export DATA=$DATAROOT/${job}.${pid}
 mkdir -p $DATA
 cd $DATA
 
+# For dumpjb
+export DATA_DUMPJB=$DATA/dumpjb
+
 ####################################
 # Determine Job Output Name on System
 ####################################
 export pgmout="OUTPUT.${pid}"
 
 export cycle=t${cyc}z
-export NET=omb
+export NET=seaice
 
 #################################################
 # Specify job's execution areas (directory paths)
@@ -61,7 +64,7 @@ env
 
 #####################################
 # Execute the script
-$HOMEseaice_analysis/scripts/exseaice_analysis.sh.ecf >> $pgmout
+$HOMEseaice_analysis/scripts/exseaice_ssmis.sh >> $pgmout
 export err=$?
 err_chk
 #####################################
