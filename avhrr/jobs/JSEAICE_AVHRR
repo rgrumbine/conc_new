@@ -1,0 +1,73 @@
+#!/bin/sh
+
+#set -xae
+set -xa
+# #### 31 March 2015 ******************************
+# SETUP AVHRR DATA RETRIEVAL for SEAICE CONCENTRATION ANALYSIS filter
+# ###########################################
+echo Have Entered Filtering Script, PDY = $PDY m1 = $PDYm1
+
+export PS4='$SECONDS + '
+date
+echo cyc is ${cyc:?}
+echo envir is ${envir:?}
+echo seaice_analysis_ver is ${seaice_analysis_ver:?} 
+export pid=$$
+
+export DATA=$DATAROOT/${job}.${pid}
+mkdir -p $DATA
+cd $DATA
+
+export DATA_DUMPJB=$DATA/dumpjb
+
+####################################
+# Determine Job Output Name on System
+####################################
+export pgmout="OUTPUT.${pid}"
+
+export cycle=t${cyc}z
+export NET=${NET:-seaice}
+
+#################################################
+# Specify job's execution areas (directory paths)
+#################################################
+export EXECseaice_analysis=${EXECseaice_analysis:-$HOMEseaice_analysis/exec}
+export FIXseaice_analysis=${FIXseaice_analysis:-$HOMEseaice_analysis/fix}
+export PARMseaice_analysis=${PARMseaice_analysis:-$HOMEseaice_analysis/parm}
+export USHseaice_analysis=${USHseaice_analysis:-$HOMEseaice_analysis/ush}
+
+#########################################
+# Run setpdy and initialize PDY variables
+#########################################
+#if [ -z $PDY ] ; then
+  setpdy.sh
+  . ./PDY
+#fi
+echo zzz AVHRR pdy = $PDY
+
+export RUN=${RUN:-sice}
+export COMIN=${COMIN:-${COMROOT}/${NET}/${envir}/${RUN}.${PDY}}
+export COMINm1=${COMINm1:-${COMROOT}/${NET}/${envir}/${RUN}.${PDYm1}}
+export COMOUT=${COMOUT:-${COMROOT}/${NET}/${envir}/${RUN}.${PDY}}
+export DCOM=${DCOM:-$DCOMROOT/prod/$PDY}
+
+mkdir -p $COMOUT
+env
+
+#####################################
+# Execute the script
+echo zzz ${HOMEseaice_analysis}/scripts
+#debug: exit 0
+
+$HOMEseaice_analysis/scripts/exseaice_avhrr.sh >> $pgmout
+export err=$?
+err_chk
+#####################################
+
+cat $pgmout
+
+#if [ "$KEEPDATA" != "YES" ] ; then
+#  rm -rf $DATA
+#fi
+
+date

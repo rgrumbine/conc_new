@@ -3,11 +3,6 @@ PROGRAM bufr_readsst
 !  Original program by Bert Katz X/X/2005
 !  Modified 11 Dec 2008 by Robert Grumbine
 !                                                                      C
-!     IN THE SCRIPT THAT RUNS THIS PROGRAM, ONE MUST ISSUE THE         C
-!     COMMANDS:                                                        C
-!                                                                      C
-!     export XLFRTEOPTS="unit_vars=yes"                                C
-!     export XLFUNIT_11="NAME OF INPUT FILE (INCLUDING FULL PATH)"     C
 !                                                                      C
 !CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       !RG IMPLICIT NONE
@@ -22,8 +17,9 @@ PROGRAM bufr_readsst
       DOUBLE PRECISION dst(18), chan(3,5)
       CHARACTER(8)  SUBSET
       INTEGER outunit, creturns
-      INTEGER lat
+      INTEGER lat, outfreq
       PARAMETER (lat = 8)
+      PARAMETER (outfreq = 100000)
 
       DATA IUNT /11/
 
@@ -54,8 +50,8 @@ PROGRAM bufr_readsst
         enddo
         chan = XCHAN
 
-        IF (MOD(IREC,100000) .EQ. 0) THEN
-          PRINT *,'irec = ',IREC/100000,'e5'
+        IF (MOD(IREC,outfreq) .EQ. 0) THEN
+          PRINT *,'irec = ',IREC/outfreq,'e5'
         ENDIF
 !Since the concern is polar, trim off the low-latitude data
         IF (ABS(XDATA(lat)) .GT. 30) THEN
@@ -71,7 +67,7 @@ PROGRAM bufr_readsst
  8888 CONTINUE
       PRINT *,'IERR = ',IERR
       WRITE(6,1001) IREC
- 1001 FORMAT(' EOF ENCOUNTERED IN SST INPUT FILE AFTER RECORD NO. ',I8)
+ 1001 FORMAT(' EOF ENCOUNTERED IN AVHRR INPUT FILE AFTER RECORD NO. ',I8)
       STOP
 
 !  NORMAL EXIT
