@@ -41,8 +41,12 @@ else
   env
 
 
-  #export MMAB_BASE=`pwd`/mmablib/${MMAB_VER}
-  export MMAB_BASE=$HOME/rgdev/mmablib/${MMAB_VER}
+  export ref=`pwd`
+  export MMAB_BASE=`pwd`/mmablib/${MMAB_VER}
+  cd $MMAB_BASE/
+  make
+  cd ..
+  #export MMAB_BASE=$HOME/rgdev/mmablib/${MMAB_VER}
   export MMAB_INC=$MMAB_BASE/include
   export MMAB_SRC=$MMAB_BASE/sorc
   export MMAB_LIBF4=$MMAB_BASE/libombf_4.a
