@@ -5,7 +5,7 @@
 set -x
 
 source ../versions/build.ver
-echo zzz seaice_analysis_ver = $seaice_analysis_ver
+echo zzz seaice_avhrr_ver = $seaice_avhrr_ver
 
 module list > /dev/null 2> /dev/null
 
@@ -28,12 +28,12 @@ else
   #set +x
   #module reset
   echo zzz pwd = `pwd`
-  echo zzz seaice_analysis_ver = $seaice_analysis_ver
+  echo zzz seaice_avhrr_ver = $seaice_avhrr_ver
 
   module use `pwd`/modulefiles
-  module load seaice_analysis/$seaice_analysis_ver
+  module load seaice_avhrr/$seaice_avhrr_ver
   if [ $? -ne 0 ] ; then
-    echo some problem trying to load seaice_analysis/$seaice_analysis_ver
+    echo some problem trying to load seaice_avhrr/$seaice_avhrr_ver
     exit 1
   fi
   set -x
@@ -76,4 +76,7 @@ do
 done
 
 rm */*.o
+if [ ! -d ../exec ] ; then
+  mkdir ../exec
+fi
 mv seaice_avhrrfilter.Cd/seaice_avhrrfilter seaice_avhrrbufr.fd/seaice_avhrrbufr ../exec/
