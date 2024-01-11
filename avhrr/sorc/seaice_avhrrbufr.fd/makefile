@@ -3,11 +3,10 @@
 #
 include ../makeall.mk
 
-SRCS=	gac_readsst.f90 gac_binary.c
-OBJS=	gac_readsst.o gac_binary.o
+SRCS=	gac_readavhrr.f90 gac_binary.c
+OBJS=	gac_readavhrr.o gac_binary.o
 # Tunable parameters
 #
-#LIBS =	   -L/nwprod/lib -lw3nco_d -lw3emc_d -lbufr_d_64 
 LIBS =	   $(W3NCO_LIBd) $(BUFR_LIBd)
 CMD =	    seaice_avhrrbufr
 

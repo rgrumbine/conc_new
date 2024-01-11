@@ -58,6 +58,11 @@ else
 
 fi
 export mmablib_ver=${MMAB_VER}
+base=`pwd`
+cd mmablib
+make
+cd $base
+
 
 set -x
 

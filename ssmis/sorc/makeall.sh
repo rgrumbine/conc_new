@@ -34,8 +34,8 @@ else
     exit 1
   fi
   set -x
-  module list > modules.running 2> modules.running2
-  env > env.running
+  #debug: module list > modules.running 2> modules.running2
+  #debug: env > env.running
 
   # fix MMAB?
   # module load mmab/$MMAB_VER
@@ -52,7 +52,7 @@ export mmablib_ver=${MMAB_VER}
 set -x
 set -e
 
-for d in l1b_to_l2 l2_to_l3 seaice_ssmisubufr.fd
+for d in l1b_to_l2 
 do
   cp makeall.mk $d
   cd $d
@@ -63,7 +63,7 @@ done
 if [ ! -d ../exec ] ; then
   mkdir ../exec
 fi
-./toexec cp
+cp l1b_to_l2/ssmisu_tol2 ../exec
 
 #clean up
 rm */makeall.mk

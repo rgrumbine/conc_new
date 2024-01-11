@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+set -x
+
+#Set up something like ecf environment for calling J job
+
+export cyc=${cyc:-00}
+export envir=${envir:-developer}
+export seaice_analysis_ver=${seaice_analysis_ver:-v4.5.0}
+export job=${job:-seaice_analysis}
+
+export PDY=${PDY:-20230722}
+export PDYm1=${PDYm1:-20230721}
+
+. ./jobcards
+
+#Now call J job, which will call the ex
+/u/robert.grumbine/rgdev/conc_new/ssmis/jobs/JSEAICE_ANALYSIS
+
