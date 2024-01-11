@@ -1,0 +1,84 @@
+#!/bin/sh
+
+# Bring the various environment-sensitive definitions out of J jobs and to here:
+#NCO refers to these as 'job card' variables
+if [ -z $LMOD_FAMILY_COMPILER ] ; then
+  echo RG: jobcards setting up environment
+  module load PrgEnv-intel/8.2.0
+  module load intel/19.1.3.304
+  #module load ips/19.0.5.281 impi/19.0.5
+  module load netcdf/4.7.4
+
+  module load prod_envir/2.0.6
+  module load prod_util/2.0.13
+  module load libjpeg/9c             #needed for grib_util
+  module load grib_util/1.2.4
+
+  #module load bufr_dumplist/2.3.0
+  #module load dumpjb/5.1.0
+  module load bufr_dump/2.0.0
+
+  #module load lsf/10.1
+  module list
+fi
+
+#set -xe
+set -x
+
+export HOMEbase=/u/robert.grumbine/rgdev
+export seaice_analysis_ver=v4.5.0
+export HOMEseaice_analysis=$HOMEbase/seaice_analysis.${seaice_analysis_ver}
+
+export MODULEPATH_ROOT=/usrx/local/prod/modulefiles
+
+export COMINsst_base=${COMINsst_base:-`compath.py gfs/prod/sst`}
+
+#Important that these be after compaty.py
+export RUN_ENVIR=not_nco
+export envir=developer
+
+export NET=omb
+export RUN=sice
+export cyc=${cyc:-00}
+export cycle=t${cyc}z
+export pid=$$
+export jobid=$pid
+
+
+if [ "$envir" = 'prod' ] || [ "$envir" = 'para' ] || [ "$envir" = 'test' ] ; then
+  #NCO
+  export HOMEbase=/nw${envir}
+  export COMROOT=/com
+  export COMINsst_base=/com/gfs/prod
+  export PCOMROOT=/pcom/${envir}/mrf
+else
+  #developer
+  export COMROOT=/u/robert.grumbine/noscrub/com/
+  export DATAROOT=/lfs/h2/emc/ptmp/wx21rg/
+  export HOMEbase=/u/robert.grumbine/rgdev
+  export jlogfile=/u/robert.grumbine/jlogfile
+  export PCOMROOT=/u/robert.grumbine/noscrub/pcom/$RUN
+  export SENDCOM=YES
+
+  #export COMROOT=/u/robert.grumbine/noscrub/com/${NET}/${envir}
+fi
+
+########################################################
+#DBN stuff
+########################################################
+#export DBNROOT=/nwprod/spa_util/fakedbn
+export DBNROOT=/iodprod/dbnet_siphon
+if [ "$envir" = "prod" ] ; then
+  export SENDDBN=YES
+  export SENDDBN_NTC=YES
+else
+  if [ $envir = "para" ] ; then
+    export SENDDBN=YES
+    export SENDDBN_NTC=NO
+    export DBN_ALERT_TYPE=TBD_PARA
+  else
+    export SENDDBN=NO
+    export SENDDBN_NTC=NO
+  fi
+fi
+########################################################
